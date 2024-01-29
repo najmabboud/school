@@ -6,7 +6,9 @@ from pywebio.output import *
 from pywebio.session import *
 import mysql.connector as mysql
 
-con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
+#con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
+
+
 app = Flask(__name__)
 pywebio.config(title="مدرستي")
 
@@ -146,16 +148,27 @@ def inf_teacher():
             c3=data_teacher["c3"]
             c4=data_teacher['c4']
             c5=data_teacher['c5']
-            
             con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
             cur = con.cursor()
-            query = 'INSERT INTO `teacherinfo`(`schoolname`,`class`,`subjectname`,`teacher`) VALUES(%s,%s,%s,%s)'
-            val = (c1,c3,c4,c5)
-            cur.execute(query, val)   
+            cur.execute("SELECT DISTINCT teacher FROM teacherinfo WHERE schoolname=%s AND class=%s AND subjectname=%s  ORDER BY teacher ASC", (c1,c3,c4))
+            tu=cur.fetchall()
             con.commit()
             con.close()
-            popup("✔✔✔✔",content="تمت اضافة البيانات بنجاح")
+            tu1=[data[0] for data in tu]
             
+            if tu1==[]:
+            
+            
+                con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
+                cur = con.cursor()
+                query = 'INSERT INTO `teacherinfo`(`schoolname`,`class`,`subjectname`,`teacher`) VALUES(%s,%s,%s,%s)'
+                val = (c1,c3,c4,c5)
+                cur.execute(query, val)   
+                con.commit()
+                con.close()
+                popup("✔✔✔✔",content="تمت اضافة البيانات بنجاح")
+            else:
+                popup("عذرا",content="لقد قمت بإضافة الاستاذ سابقا")
         
 
 
@@ -174,12 +187,12 @@ def update_teacher():
     d2=data_up_teacher['d2']
     con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
     cur = con.cursor()
-    cur.execute("SELECT DISTINCT schoolname FROM account WHERE schoolname=%s AND schoolpassword=%s   ORDER BY schoolname ASC", (d1,d2))
+    cur.execute("SELECT DISTINCT schoolpassword FROM account WHERE schoolname=%s AND schoolpassword=%s   ORDER BY schoolname ASC", (d1,d2))
     d1res = (cur.fetchall())
     con.commit()
     con .close()
     d1res1=[data[0] for data in d1res]
-    if d1res1[0]!= d1:
+    if d1res1== []:
         popup("💥💥💥",content="تأكد من اسم المدرسة وكلمة المرور انهما صحيحتين")
     
     
@@ -784,7 +797,7 @@ def trans_students():
         con.commit()
         con .close()
         aab1=[data[0] for data in aab]
-        if aab1[0]==k2:
+        if aab1!=[]:
             
             con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
             cur = con.cursor()
@@ -853,7 +866,7 @@ def delt_students():
         con.commit()
         con .close()
         ab1=[data[0] for data in ab]
-        if ab1[0]==o2:
+        if ab1[0]!=[]:
             
             
             con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
@@ -915,7 +928,7 @@ def delt_update_school():
         con.commit()
         con .close()
         v1=[data[0] for data in v]
-        if v1[0]==q2:
+        if v1!=[]:
             
             
             con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
