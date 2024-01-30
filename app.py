@@ -480,13 +480,15 @@ def edit_mark():
             input("اسم المدرسة",type="text",name="h1",required=True),
             input("كلمة المرور ",type="text",name="h2",required=True),
             select(" الصف",options=class_name,required=True,name="h4"),
-            select("الفصل ",options=session,name="h3",required=True)
+            select("الفصل ",options=session,name="h3",required=True),
+            select("العام الدراسي ",options=date,name="h12",required=True)
             
         ])
     h1=data_g["h1"]
     h2=data_g["h2"]
     h3=data_g["h3"]
     h4=data_g['h4']
+    h12=data_g['h12']
     
     #التأكد من اسم المدرسة
     con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
@@ -560,7 +562,7 @@ def edit_mark():
             fg=h8+" :"+"اسم الام "+h9
             con=mysql.connect(host='buduioid4mevhus3yhtg-mysql.services.clever-cloud.com',user='uqxeimuqg50oixeq',password='DwdctjNldbPo7t9PGkLe',database='buduioid4mevhus3yhtg')
             cur = con.cursor()
-            cur.execute('UPDATE `markers` SET workdegree=%s , examdegree=%s , mark=%s WHERE schoolname=%s AND class=%s AND subject=%s AND session=%s AND student=%s   ', (h10,h11,h,h1,h4,h5,h3,fg))
+            cur.execute('UPDATE `markers` SET workdegree=%s , examdegree=%s , mark=%s WHERE schoolname=%s AND class=%s AND subject=%s AND session=%s AND student=%s AND date=%s  ', (h10,h11,h,h1,h4,h5,h3,fg,h12))
             con.commit()
             con.close()
             popup("✔✔✔✔",content="تم  التعديل بنجاح")
